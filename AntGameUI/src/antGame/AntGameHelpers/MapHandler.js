@@ -11,8 +11,8 @@ const FoodPerCell = Config.FoodPerCell;
 const DirtPerCell = Config.DirtPerCell;
 const FoodPerDecayStep = FoodPerCell / BlockDecaySteps;
 const DirtDecayPerStep = DirtPerCell / BlockDecaySteps;
-const NotFoodPerCell = Config.NoFoodPerCell;
-const NotFoodDecayPerStep = NotFoodPerCell / BlockDecaySteps;
+const NoFoodPerCell = Config.NoFoodPerCell;
+const NoFoodDecayPerStep = NoFoodPerCell / BlockDecaySteps;
 const FoodValue = Brushes.find(b => b.name === "Food").value;
 const HomeValue = Brushes.find(b => b.name === "Home").value;
 const DirtValue = Brushes.find(b => b.name === "Dirt").value;
@@ -364,7 +364,7 @@ export class MapHandler {
       this.setCellTo(intMapXY, " ");
     } else if (cellValue === DirtValue && newAmount % DirtDecayPerStep === 0) {
       this.setCellTo(intMapXY, cellValue + newAmount);
-    } else if (cellValue === NoFoodValue && newAmount % NotFoodDecayPerStep === 0) {
+    } else if (cellValue === NoFoodValue && newAmount % NoFoodDecayPerStep === 0) {
       this.setCellTo(intMapXY, cellValue + newAmount);
     } else {
       this.setCellToSilent(intMapXY, cellValue + newAmount);
@@ -383,7 +383,7 @@ export class MapHandler {
       const surroundingCells = this.getSurroundingCells(intMapXY, 2);
       const noSurroundingFood = !surroundingCells.some(cell => cell.includes("f"));
       if (noSurroundingFood && CompatibilityUtility.EnableNoFoodBlocks(this._compatibilityDate)) {
-        this.setCellTo(intMapXY, NoFoodValue + NotFoodPerCell);
+        this.setCellTo(intMapXY, NoFoodValue + NoFoodPerCell);
       } else {
         this.setCellTo(intMapXY, " ");
       }
