@@ -70,6 +70,10 @@ export class MapGraphics {
     this.brushColors["foodText"] = this._graphics.color("#7DCEA0");
   }
 
+  shouldDrawCell(value) {
+    return value !== " " && value !== NoFoodValue;
+  }
+
   drawFullMap({ map }) {
     this._graphics.clear();
     this.lastCell = "";
@@ -77,13 +81,13 @@ export class MapGraphics {
       for (let y = 0; y < MapBounds[1]; y++) {
         let cell = map[x][y];
         if (cell.length !== 1) cell = cell[0];
-        if (cell !== " ") {
-          if (cell !== this.lastCell) {
-            this.lastCell = cell;
-            this.setFillColor(this.brushColors[cell]);
-          }
-          this.drawCellColor([x, y]);
+        if (!this.shouldDrawCell(cell[0])) continue;
+
+        if (cell !== this.lastCell) {
+          this.lastCell = cell;
+          this.setFillColor(this.brushColors[cell]);
         }
+        this.drawCellColor([x, y]);
       }
     }
     this.lastCell = "";
@@ -92,7 +96,7 @@ export class MapGraphics {
   drawMap({ cellsToDraw, map }) {
     cellsToDraw.forEach(cellPos => {
       let cell = map[cellPos[0]][cellPos[1]];
-      if (cell === " " || cell[0] === NoFoodValue) {
+      if (!this.shouldDrawCell(cell[0])) {
         this.eraseCell(cellPos);
         return;
       }
