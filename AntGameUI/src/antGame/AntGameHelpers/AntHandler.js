@@ -2,7 +2,6 @@ import { Config } from "../config";
 import { Ant } from "./Ant";
 
 const Brushes = Config.brushes;
-const AntsToSpawn = Config.AntsToSpawn;
 const HomeValue = Brushes.find(brush => brush.name === "Home").value;
 
 export class AntsHandler {
@@ -41,7 +40,8 @@ export class AntsHandler {
     this.redrawAnts = true;
   }
 
-  async spawnAnts({ homeTrailHandler, foodTrailHandler, mapHandler, seed }) {
+  async spawnAnts({ homeTrailHandler, foodTrailHandler, mapHandler, seed, antCount, }) {
+    const antsToSpawn = antCount ?? Config.AntsToSpawn;
     if (this.deterministicMode) {
       seed = "1";
     }
@@ -49,7 +49,7 @@ export class AntsHandler {
     const map = mapHandler.map;
     this.ants = [];
     const homeCells = mapHandler.homeCellCount;
-    let antsPerCell = AntsToSpawn / homeCells;
+    let antsPerCell = antsToSpawn / homeCells;
     if (antsPerCell > 1) antsPerCell = Math.round(antsPerCell);
     for (let x = 0; x < map.length; x++) {
       for (let y = 0; y < map[0].length; y++) {
@@ -59,6 +59,7 @@ export class AntsHandler {
             if (rand > antsPerCell) continue;
           }
           for (let i = 0; i < antsPerCell; i++) {
+            const role = Math.random() < 0.3 ? "scout" : "worker";
             this.ants.push(
               new Ant(
                 [x, y],
@@ -67,9 +68,11 @@ export class AntsHandler {
                 foodTrailHandler,
                 Brushes.find(brush => brush.value === map[x][y]),
                 `${seed}-${i}`,
-                this._compatibilityDate
+                this._compatibilityDate,
+                role
               )
             );
+
           }
         }
       }

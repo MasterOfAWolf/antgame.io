@@ -7,7 +7,7 @@ export const Config = {
   AntSize: 10,
   ViewDistance: 2,
   TrailDropRate: 5,
-  AntsToSpawn: 1000,
+  AntsToSpawn: 100,
   // // Debug
   // ViewDistance: 30,
   // MapBounds: [30, 16],

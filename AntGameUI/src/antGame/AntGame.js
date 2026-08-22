@@ -75,6 +75,7 @@ export default class AntGame extends React.Component {
       foodReturned: 0,
       homeOnMap: 0,
       speed: this.gameSpeed,
+      antCount: 100,
     };
 
     const homeColor = Brushes.find(brush => brush.value === HomeValue).color;
@@ -328,6 +329,11 @@ export default class AntGame extends React.Component {
     }
   };
 
+setAntCount = value => {
+  this.setState({ antCount: value });
+};
+
+
   updateBrushSize = size => {
     this.brushSize = size;
   };
@@ -381,12 +387,14 @@ export default class AntGame extends React.Component {
         } else if (IsSandbox) {
           this.setCompatibilityDate(CompatibilityHelper.getCompatibilityDate(new Date()));
         }
-        this.antHandler.spawnAnts({
-          homeTrailHandler: this.homeTrailHandler,
-          foodTrailHandler: this.foodTrailHandler,
-          mapHandler: this.mapHandler,
-          seed,
+          this.antHandler.spawnAnts({
+            homeTrailHandler: this.homeTrailHandler,
+            foodTrailHandler: this.foodTrailHandler,
+            mapHandler: this.mapHandler,
+            seed,
+           antCount: this.state.antCount, // 🐜🐜🐜
         });
+
       } else {
         this.mapHandler.findNewDecayableBlocks();
         this.mapHandler.calculateFoodToStopTime();
@@ -573,6 +581,24 @@ export default class AntGame extends React.Component {
         />
         <div style={styles.centered}>
           <div style={styles.header}>
+            
+{this.gamemode === "sandbox" && (
+  <div style={{ marginBottom: "8px" }}>
+    <label>
+      Ant Count: <strong>{this.state.antCount}</strong>
+    </label>
+    <br />
+    <input
+      type="range"
+      min="1"
+      max="1500"
+      value={this.state.antCount}
+      disabled={this.state.playState}
+      onChange={e => this.setAntCount(Number(e.target.value))}
+    />
+  </div>
+)}
+
             <MenuBar
               time={this.state.time}
               timerActive={this.state.timerActive}
