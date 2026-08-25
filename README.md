@@ -1,6 +1,6 @@
-# AntGame.io
+# Modded AntGame.io
 
-[AntGame.io](htps://antgame.io) is a puzzle web game built around an ant simulator. 
+a puzzle web game built around an ant simulator. 
 
 ## Description
 
@@ -27,7 +27,3 @@ This system, combined with a large seed range (1x10<sup>8</sup>), provides prote
 Offline brute forcing would be writing a script to find the perfect pair of home locations and seed to maximize the score of a run. While possible, finding this pair can't be used to cheat since the seed of a submitted run cannot be controlled by the user.
 
 Online brute forcing would be asking for seeds at a high rate, looking for the perfect one (determined by offline brute forcing). The rate limit ensures a user can, at most, be issued 28,800 seeds a day. That's 0.03% of the total seeds. Being issued the "perfect" seed is very unlikely.
-
-## Contact
-
-Email me at: admin@antgame.io
