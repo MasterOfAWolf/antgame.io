@@ -10,7 +10,16 @@ import { AntsHandler as AntHandler } from "./AntGameHelpers/AntHandler";
 import { TrailHandler } from "./AntGameHelpers/TrailHandler";
 import { TimerHandler } from "./AntGameHelpers/Menu/Timer/TimerHandler";
 import MenuBar from "./AntGameHelpers/Menu/MenuBar";
-import { AntFoodSmol, AntSmol } from "./AntGameHelpers/AntImages";
+import { 
+  AntFoodSmol, AntSmol, 
+  angryAntFoodSmol, angryAntSmol, 
+  happyAntFoodSmol, happyAntSmol, 
+  diamondAntFoodSmol, diamondAntSmol,
+  farmerAntFoodSmol, farmerAntSmol
+} from "./AntGameHelpers/AntImages";
+
+
+
 import { GameModeContext } from "./GameModeContext";
 import ChallengeHandler from "./Challenge/ChallengeHandler";
 import ChallengeModal from "./AntGameHelpers/Challenge/ChallengeModal";
@@ -159,7 +168,15 @@ export default class AntGame extends React.Component {
 
     this.antImage = p5.loadImage(AntSmol);
     this.antFoodImage = p5.loadImage(AntFoodSmol);
-
+    this.angryAntImage = p5.loadImage(angryAntSmol);
+    this.angryAntFoodImage = p5.loadImage(angryAntFoodSmol);
+    this.happyAntImage = p5.loadImage(happyAntSmol);
+    this.happyAntFoodImage = p5.loadImage(happyAntFoodSmol);
+    this.farmerAntImage = p5.loadImage(farmerAntSmol);
+    this.farmerAntFoodImage = p5.loadImage(farmerAntFoodSmol);
+    this.diamondAntImage = p5.loadImage(diamondAntSmol);
+    this.diamondAntFoodImage = p5.loadImage(diamondAntFoodSmol);
+    
     this.setCanvasBounds(p5);
 
     this.antGraphic = p5.createGraphics(canvasW, canvasH);
@@ -258,17 +275,40 @@ export default class AntGame extends React.Component {
       }
     }
 
-    if (this.antHandler.redrawAnts) {
-      const ants = this.antHandler.ants;
-      DrawAnts({
-        graphics: this.antGraphic,
-        ants,
-        mapXYToCanvasXY: this.mapDrawer.mapXYToCanvasXY.bind(this.mapDrawer),
-        antNoFoodImage: this.antImage,
-        antFoodImage: this.antFoodImage,
-      });
-      this.antHandler.redrawAnts = false;
+if (this.antHandler.redrawAnts) {
+  const ants = this.antHandler.ants;
+  
+  // 1. Change this string to test different shop cosmetics!
+  // Options: "ant", "angryAnt", "happyAnt", "farmerAnt"
+  const currentSkin = "diamondAnt"; 
+
+  // 2. Create an asset registry that maps to your loaded p5 image properties
+  const ANT_SKIN_REGISTRY = {
+    normalAnt: { noFood: this.antImage, hasFood: this.antFoodImage },
+    angryAnt:  { noFood: this.angryAntImage, hasFood: this.angryAntFoodImage },
+    happyAnt:  { noFood: this.happyAntImage, hasFood: this.happyAntFoodImage },
+    farmerAnt: { noFood: this.farmerAntImage, hasFood: this.farmerAntFoodImage },
+    diamondAnt: { noFood: this.diamondAntImage, hasFood: this.diamondAntFoodImage },
+  };
+
+  // 3. Grab the active dynamic pair (fallback to normalAnt if typo)
+  const selectedSkin = ANT_SKIN_REGISTRY[currentSkin] || ANT_SKIN_REGISTRY.normalAnt;
+
+  DrawAnts({
+    graphics: this.antGraphic,
+    ants,
+    mapXYToCanvasXY: this.mapDrawer.mapXYToCanvasXY.bind(this.mapDrawer),
+    antSkin: currentSkin,
+    antImages: {
+      [`${currentSkin}NoFoodImage`]: selectedSkin.noFood,
+      [`${currentSkin}FoodImage`]: selectedSkin.hasFood,
     }
+  });
+  
+  this.antHandler.redrawAnts = false;
+}
+
+
 
     if (this.homeTrailHandler.hasPointsToDraw) this.homeTrailDrawer.drawPoints(this.homeTrailHandler);
     if (this.foodTrailHandler.hasPointsToDraw) this.foodTrailDrawer.drawPoints(this.foodTrailHandler);
