@@ -5,7 +5,6 @@ const AntOffset = AntSize / 2;
 const AntHighlightSize = Config.AntSize * 3;
 const AntHighlightOffset = AntHighlightSize / 2;
 
-// 1. Accept antSkin as a parameter (defaulting to "normalAnt" as a safe fallback)
 export const DrawAnts = ({ graphics, ants, mapXYToCanvasXY, antImages, antSkin = "normalAnt" }) => {
   graphics.clear();
 
@@ -18,7 +17,6 @@ export const DrawAnts = ({ graphics, ants, mapXYToCanvasXY, antImages, antSkin =
     const highlight = ant.isLoggyBoi;
     const canvasXY = mapXYToCanvasXY([ant.x, ant.y]);
     
-    // 2. Use the dynamic antSkin variable instead of a hardcoded string
     const imageKey = ant.hasFood ? `${antSkin}FoodImage` : `${antSkin}NoFoodImage`;
     const antImage = antImages[imageKey];
 
@@ -28,8 +26,6 @@ export const DrawAnts = ({ graphics, ants, mapXYToCanvasXY, antImages, antSkin =
     }
 
     graphics.resetMatrix();
-    
-    // 3. Destructure the array correctly for the translation matrix
     graphics.translate(canvasXY[0], canvasXY[1]);
     
     if (highlight) graphics.circle(0, 0, 40);

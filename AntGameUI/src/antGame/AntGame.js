@@ -278,11 +278,10 @@ export default class AntGame extends React.Component {
 if (this.antHandler.redrawAnts) {
   const ants = this.antHandler.ants;
   
-  // 1. Change this string to test different shop cosmetics!
-  // Options: "ant", "angryAnt", "happyAnt", "farmerAnt"
-  const currentSkin = "diamondAnt"; 
+  // This string holds ant skins
+  // Options: "ant", "angryAnt", "happyAnt", "farmerAnt", "diamondAnt"
+  let currentSkin = "diamondAnt"; 
 
-  // 2. Create an asset registry that maps to your loaded p5 image properties
   const ANT_SKIN_REGISTRY = {
     normalAnt: { noFood: this.antImage, hasFood: this.antFoodImage },
     angryAnt:  { noFood: this.angryAntImage, hasFood: this.angryAntFoodImage },
@@ -291,7 +290,7 @@ if (this.antHandler.redrawAnts) {
     diamondAnt: { noFood: this.diamondAntImage, hasFood: this.diamondAntFoodImage },
   };
 
-  // 3. Grab the active dynamic pair (fallback to normalAnt if typo)
+
   const selectedSkin = ANT_SKIN_REGISTRY[currentSkin] || ANT_SKIN_REGISTRY.normalAnt;
 
   DrawAnts({

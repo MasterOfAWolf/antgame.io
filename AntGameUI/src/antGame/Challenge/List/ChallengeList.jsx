@@ -8,6 +8,7 @@ import { ChallengeDetails, ChallengeLink, LeaderboardLink, PBDisplay, WRDisplay 
 import { Thumbnail } from "./Thumbnail";
 import { ChampionshipCard } from "./ChampionshipCard";
 import { YesterdaysDailyCard } from "./YesterdaysDailyCard";
+import { ShopCard } from './ShopCard';
 import { SetPageDescription, SetPageTitle } from "../../Helpers/DocumentHelpers";
 
 const ChallengeList = () => {
@@ -15,6 +16,7 @@ const ChallengeList = () => {
     <DailyChallengeCard />,
     <YesterdaysDailyCard />,
     <ChampionshipCard />,
+    <ShopCard />,
     <div className={styles.flexBreak} />,
   ];
   InitialList.push(...Array(12).fill(<ChallengeCard showThumbnails loading />));
@@ -101,6 +103,7 @@ const ChallengeList = () => {
           {dailyChallenge}
           {yesterdaysDailyCard}
           {championshipCard}
+          {ShopCard}
           <div className={styles.flexBreak} />
           {menuList}
         </div>
