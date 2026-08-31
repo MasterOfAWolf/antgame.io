@@ -15,7 +15,8 @@ import {
   angryAntFoodSmol, angryAntSmol, 
   happyAntFoodSmol, happyAntSmol, 
   diamondAntFoodSmol, diamondAntSmol,
-  farmerAntFoodSmol, farmerAntSmol
+  farmerAntFoodSmol, farmerAntSmol,
+  fireAntFoodSmol, fireAntSmol
 } from "./AntGameHelpers/AntImages";
 
 
@@ -176,6 +177,8 @@ export default class AntGame extends React.Component {
     this.farmerAntFoodImage = p5.loadImage(farmerAntFoodSmol);
     this.diamondAntImage = p5.loadImage(diamondAntSmol);
     this.diamondAntFoodImage = p5.loadImage(diamondAntFoodSmol);
+    this.fireAntImage = p5.loadImage(fireAntSmol);
+    this.fireAntFoodImage = p5.loadImage(fireAntFoodSmol);
     
     this.setCanvasBounds(p5);
 
@@ -288,6 +291,7 @@ if (this.antHandler.redrawAnts) {
     happyAnt:  { noFood: this.happyAntImage, hasFood: this.happyAntFoodImage },
     farmerAnt: { noFood: this.farmerAntImage, hasFood: this.farmerAntFoodImage },
     diamondAnt: { noFood: this.diamondAntImage, hasFood: this.diamondAntFoodImage },
+    fireAnt: { noFood: this.fireAntImage, hasFood: this.fireAntFoodImage },
   };
 
 
