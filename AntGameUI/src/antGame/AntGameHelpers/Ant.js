@@ -20,7 +20,7 @@ const WallValue = Brushes.find(brush => brush.name === "Wall").value;
 const TrailDropRate = Config.TrailDropRate;
 
 export class Ant {
-  constructor(pos, mapHandler, homeTrailHandler, foodTrailHandler, homeBrush, id, compatibilityDate, role = "worker") {
+  constructor(pos, mapHandler, homeTrailHandler, foodTrailHandler, homeBrush, id, compatibilityDate) {
     this.rng = seedrandom(id);
     this._pos = pos;
     this.mapHandler = mapHandler;
@@ -33,21 +33,12 @@ export class Ant {
     this._left = 0;
     this._ahead = 0;
     this._right = 0;
-    this.foodCarried = 0;
+    this.hasFood = false;
     this.dropsToSkip = CompatibilityUtility.StartWithDropsToSkip(this.compatibilityDate) ? 25 : 0;
     this.distanceTraveled = 0;
     this.cumulativeAngle = 0;
     this.currentCell = "";
     this.foodChanged = false;
-    this.role = role;
-
-    if (role === "scout") {
-  this.speedMultiplier = 1.5;
-  this.maxFoodCarry = 1;
-} else {
-  this.speedMultiplier = 0.8;
-  this.maxFoodCarry = 2;
-}
     this.isLoggyBoi = false;
     if (this.isLoggyBoi) {
       this.logID = Math.round(Math.random() * 10);
@@ -61,14 +52,6 @@ export class Ant {
   get y() {
     return this._pos[1];
   }
-
-  get hasFood() {
-  return this.foodCarried > 0;
-}
-
-get isFull() {
-  return this.foodCarried >= this.maxFoodCarry;
-}
 
   set angle(angle) {
     this.cumulativeAngle += this._angle - angle;
@@ -303,8 +286,8 @@ get isFull() {
   }
 
   moveToNewPosition(dropPoint) {
-    let dx = Math.cos(this._angle) * AntStepDistance * this.speedMultiplier;
-    let dy = Math.sin(this._angle) * AntStepDistance * this.speedMultiplier;
+    let dx = Math.cos(this._angle) * AntStepDistance;
+    let dy = Math.sin(this._angle) * AntStepDistance;
 
     let newPos = [this.x + dx, this.y + dy];
 
@@ -362,27 +345,20 @@ get isFull() {
         }
 
         if (newCell === this.homeBrush.value) {
-  if (this.hasFood) {
-    this.mapHandler.returnFood(pos, this.foodCarried);
-    this.foodCarried = 0;
-    this.foodChange(true); // true = reverse & reset
-  } else {
-    this.distanceTraveled = 0;
-  }
+if (this.hasFood) {
+            this.mapHandler.returnFood(pos);
+            this.foodChange();
+          } else {
+            this.distanceTraveled = 0;
+          }
         } else if (newCell === FoodValue) {
-  if (!this.hasFood) {
-    this.mapHandler.takeFood(pos);
-    this.foodCarried++;
-
-    // ONLY switch modes when full
-    if (this.foodCarried >= this.maxFoodCarry) {
-      this.foodChange(); // ← safe to call
-    }
-
-  } else {
-    this.distanceTraveled = 0;
-    this.bounceOffWall(0);
-    return false;
+          if (!this.hasFood) {
+            this.mapHandler.takeFood(pos);
+            this.foodChange();
+          } else {
+            this.distanceTraveled = 0;
+            this.bounceOffWall(0);
+            return false;
   }
         } else if (newCell === DirtValue) {
           this.mapHandler.decayDirt(pos);
@@ -407,7 +383,6 @@ get isFull() {
     this.dropsToSkip = 0;
     this.distanceTraveled = 0;
     this.cumulativeAngle = 0;
-    this.foodCarried = 0;
     if (this.lockedOnTrail) this.lockedOnTrail = false;
     this.reverse();
   }

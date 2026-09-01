@@ -59,7 +59,6 @@ export class AntsHandler {
             if (rand > antsPerCell) continue;
           }
           for (let i = 0; i < antsPerCell; i++) {
-            const role = Math.random() < 0.3 ? "scout" : "worker";
             this.ants.push(
               new Ant(
                 [x, y],
@@ -69,10 +68,8 @@ export class AntsHandler {
                 Brushes.find(brush => brush.value === map[x][y]),
                 `${seed}-${i}`,
                 this._compatibilityDate,
-                role
               )
             );
-
           }
         }
       }
