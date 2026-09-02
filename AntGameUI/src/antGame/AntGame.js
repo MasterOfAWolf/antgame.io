@@ -85,7 +85,7 @@ export default class AntGame extends React.Component {
       foodReturned: 0,
       homeOnMap: 0,
       speed: this.gameSpeed,
-      antCount: 100,
+      antCount: 1000,
     };
 
     const homeColor = Brushes.find(brush => brush.value === HomeValue).color;

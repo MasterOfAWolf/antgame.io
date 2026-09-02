@@ -345,7 +345,7 @@ export class Ant {
         }
 
         if (newCell === this.homeBrush.value) {
-if (this.hasFood) {
+          if (this.hasFood) {
             this.mapHandler.returnFood(pos);
             this.foodChange();
           } else {
@@ -359,7 +359,7 @@ if (this.hasFood) {
             this.distanceTraveled = 0;
             this.bounceOffWall(0);
             return false;
-  }
+          }
         } else if (newCell === DirtValue) {
           this.mapHandler.decayDirt(pos);
           if (this.rng.quick() < 0.5) this.bounceOffWall(3);
